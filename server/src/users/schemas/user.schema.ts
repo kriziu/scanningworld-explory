@@ -37,7 +37,6 @@ export class User {
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Place' }],
-    autopopulate: true,
     default: [],
   })
   scannedPlaces: PlaceDocument[];

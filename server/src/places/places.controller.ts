@@ -18,6 +18,7 @@ import { AccessTokenRegionGuard } from 'src/auth/guards/accessTokenRegion.guard'
 import { User } from 'src/users/schemas/user.schema';
 
 import { CreatePlaceDto } from './dto/createPlace.dto';
+import { ReviewPlaceDto } from './dto/reviewPlace.dto';
 import { ScanPlaceDto } from './dto/scanPlace.dto';
 import { UpdatePlaceDto } from './dto/updatePlace.dto';
 import { PlacesService } from './places.service';
@@ -81,6 +82,18 @@ export class PlacesController {
     const regionId = req.user['sub'];
 
     return this.placesService.delete(regionId, id);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('/review/:id')
+  async ratePlace(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() body: ReviewPlaceDto,
+  ) {
+    const userId = req.user['sub'] as string;
+
+    return this.placesService.reviewPlace(id, userId, body);
   }
 
   @UseGuards(AccessTokenGuard)

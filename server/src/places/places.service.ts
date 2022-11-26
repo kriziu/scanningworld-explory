@@ -16,6 +16,7 @@ import { Place, PlaceDocument } from './schemas/place.schema';
 import { CreatePlaceDto } from './dto/createPlace.dto';
 import { calcDistance } from './lib/distance';
 import { UpdatePlaceDto } from './dto/updatePlace.dto';
+import { ReviewPlaceDto } from './dto/reviewPlace.dto';
 
 @Injectable()
 export class PlacesService {
@@ -162,6 +163,55 @@ export class PlacesService {
     return this.placeModel
       .find({ region: regionId })
       .select(code && '+code')
+      .exec();
+  }
+
+  async reviewPlace(
+    placeId: string,
+    userId: string,
+    reviewPlaceDto: ReviewPlaceDto,
+  ): Promise<PlaceDocument> {
+    if (!isValidObjectId(placeId)) {
+      throw new BadRequestException('Invalid place id');
+    }
+
+    const place = await this.placeModel.findById(placeId).exec();
+
+    if (!place) {
+      throw new NotFoundException('Place not found');
+    }
+
+    const user = await this.usersService.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const reviewByUser = place.reviews.find(
+      (review) => review.user._id.toString() === userId,
+    );
+
+    if (reviewByUser) {
+      throw new BadRequestException('You already reviewed this place');
+    }
+
+    return await this.placeModel
+      .findByIdAndUpdate(
+        placeId,
+        {
+          $push: {
+            reviews: {
+              user: userId,
+              ...reviewPlaceDto,
+            },
+          },
+          averageRating:
+            ((place.averageRating || 0) * place.reviews.length +
+              reviewPlaceDto.rating) /
+            (place.reviews.length + 1),
+        },
+        { new: true },
+      )
       .exec();
   }
 

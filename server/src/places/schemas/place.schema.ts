@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 import { RegionDocument } from 'src/regions/schemas/region.schema';
+import { UserDocument } from 'src/users/schemas/user.schema';
 
 export type PlaceDocument = Place & Document;
 
@@ -32,6 +33,29 @@ export class Place {
     lat: number;
     lng: number;
   };
+
+  @Prop({
+    type: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          autopopulate: true,
+        },
+        rating: Number,
+        comment: String,
+      },
+    ],
+    default: [],
+  })
+  reviews: {
+    user: UserDocument;
+    rating: number;
+    comment: string;
+  }[];
+
+  @Prop({ default: 0 })
+  averageRating: number;
 
   @Prop({ select: false })
   code: string;
