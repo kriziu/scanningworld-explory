@@ -57,6 +57,4 @@ class SecureStorageManager{
   Future<void> deleteRefreshToken() async {
     await storage.delete(key: API_REFRESH_TOKEN_STORAGE_KEY);
   }
-
-
 }

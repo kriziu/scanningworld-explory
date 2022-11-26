@@ -17,6 +17,8 @@ class PlatformInput extends StatelessWidget {
   final TextEditingController? controller;
   final IconData? prefixIcon;
   final int? maxLength;
+  final int? maxLines;
+  final int? minLines;
 
   const PlatformInput(
       {Key? key,
@@ -32,6 +34,8 @@ class PlatformInput extends StatelessWidget {
       this.focusNode,
       this.controller,
       this.prefixIcon,
+      this.maxLines = 1,
+      this.minLines,
       this.onFieldSubmitted})
       : super(key: key);
 
@@ -48,6 +52,8 @@ class PlatformInput extends StatelessWidget {
       maxLength: maxLength,
       textInputAction: textInputAction,
       hintText: hintText,
+      minLines: minLines,
+      maxLines: maxLines,
       cupertino: (_, __) => cupertinoTextFieldDecoration(
           prefix: Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 4),
