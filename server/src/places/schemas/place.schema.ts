@@ -35,6 +35,9 @@ export class Place {
 
   @Prop({ select: false })
   code: string;
+
+  @Prop({ default: 0 })
+  scanCount: number;
 }
 
 export const PlaceSchema = SchemaFactory.createForClass(Place);

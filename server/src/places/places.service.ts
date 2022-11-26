@@ -209,6 +209,8 @@ export class PlacesService {
 
     const regionId = user.region._id.toString();
 
+    await place.updateOne({ $inc: { scanCount: 1 } }).exec();
+
     return await this.usersService.update(userId, {
       scannedPlaces: [...user.scannedPlaces, place._id],
       points: {
