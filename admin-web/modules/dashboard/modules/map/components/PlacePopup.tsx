@@ -93,7 +93,11 @@ const PlacePopup = () => {
           </div>
         </div>
 
-        <div className="mt-3 flex w-full justify-end gap-5">
+        <div className="mt-3 flex w-full items-center justify-end gap-5">
+          <p className="font-semibold">
+            Liczba zeskanowań:{' '}
+            <span className="font-bold">{activePlace.scanCount}</span>
+          </p>
           <button
             className="btn btn-secondary"
             onClick={() => openModal(<PlaceModal />)}

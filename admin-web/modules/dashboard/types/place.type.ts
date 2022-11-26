@@ -12,6 +12,9 @@ export type PlaceType = {
   points: number;
   code: string;
   region: RegionType;
+  scanCount: number;
+  // reviews: any[];
+  // averageRating: number; // TODO: Add reviews to see for admin side, activateCount for coupons
 };
 
 export type PlaceValues = {

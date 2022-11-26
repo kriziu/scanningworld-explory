@@ -4,6 +4,7 @@ import CouponList from './components/CouponList';
 import Header from './components/Header';
 import Menu from './components/Menu';
 import PlaceList from './components/PlaceList';
+import StatisticsButton from './components/StatisticsButton';
 import { MenuType } from './types/menu.type';
 
 const Sidebar = () => {
@@ -12,6 +13,8 @@ const Sidebar = () => {
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 py-8">
       <Header />
+
+      <StatisticsButton />
 
       <div className="flex w-full flex-1 flex-col overflow-hidden px-12">
         <Menu
