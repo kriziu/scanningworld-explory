@@ -56,11 +56,18 @@ const StatisticsModal = () => {
     ],
   };
 
+  const isSomePlaceScanned = data.some((place) => place.scanCount > 0);
+
   return (
     <div className="flex h-[34rem] w-[40rem] flex-col items-center gap-3 pb-10">
       <h1 className="text-center text-lg font-semibold">Statystyki</h1>
 
-      <Pie data={chartData} />
+      {isSomePlaceScanned && <Pie data={chartData} />}
+      {!isSomePlaceScanned && (
+        <div className="flex flex-1 items-center justify-center text-center text-lg text-red-600">
+          Nie ma jeszcze żadnych zeskanowań kodu QR
+        </div>
+      )}
     </div>
   );
 };
