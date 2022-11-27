@@ -53,7 +53,7 @@ class User {
             json["points"] == null ? {} : Map<String, int>.from(json["points"]),
         region: Region.fromJson(json["region"]),
         scannedPlaces: List<Place>.from(
-            json["scannedPlaces"].map((x) => Place.fromJson(x))),
+            json["scannedPlaces"].map((x) => Place.fromJson(x))) ,
         activeCoupons: List<ActiveCoupon>.from(
             json["activeCoupons"].map((x) => ActiveCoupon.fromJson(x))),
       );

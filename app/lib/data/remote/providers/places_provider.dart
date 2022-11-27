@@ -51,4 +51,15 @@ class PlacesProvider with ChangeNotifier {
       return null;
     }
   }
+
+  //rate place
+  Future<void> ratePlace(String placeId, double rating) async {
+    try {
+      final response = await dio.post('/places/$placeId', data: {'rating': rating});
+    } on DioError catch (e) {
+      throw HttpError.fromDioError(e);
+    } catch (err) {
+      throw HttpError(err.toString());
+    }
+  }
 }

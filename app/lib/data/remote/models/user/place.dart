@@ -1,5 +1,6 @@
 
 import 'package:scanning_world/data/remote/models/user/region.dart';
+import 'package:scanning_world/data/remote/models/user/review.dart';
 
 class Place {
   final String id;
@@ -9,6 +10,8 @@ class Place {
   final Region region;
   final num points;
   final Location location;
+  final num averageRating;
+  final List<Review> reviews;
 
   Place({
     required this.id,
@@ -18,6 +21,8 @@ class Place {
     required this.region,
     required this.points,
     required this.location,
+    required this.averageRating,
+    required this.reviews,
   });
 
   factory Place.fromJson(Map<String, dynamic> json) => Place(
@@ -28,6 +33,8 @@ class Place {
     region: Region.fromJson(json["region"]),
     points: json["points"],
     location: Location.fromJson(json["location"]),
+    averageRating: json["averageRating"] == null ? 0 : json["averageRating"] as num,
+    reviews: json["reviews"] == null ?  []:List<Review>.from(json["reviews"].map((x) => Review.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +45,8 @@ class Place {
     "region": region,
     "points": points,
     "location": location,
+    "averageRating": averageRating,
+    "reviews": reviews.map((e) => e.toJson()).toList(),
   };
 
   String get locationLatLng => '${location.lat.toStringAsFixed(3)}, ${location.lng.toStringAsFixed(3)}';

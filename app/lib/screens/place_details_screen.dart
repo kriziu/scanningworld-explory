@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:scanning_world/data/remote/providers/places_provider.dart';
 import 'package:scanning_world/services/url_service.dart';
 import 'package:scanning_world/theme/theme.dart';
+import 'package:scanning_world/widgets/common/place_rate.dart';
 import 'package:scanning_world/widgets/common/platform_input_group.dart';
 import 'package:scanning_world/widgets/common/platfrom_input.dart';
 import 'package:scanning_world/widgets/home/map/pick_map_bottom_sheet.dart';
@@ -16,6 +17,7 @@ import '../data/remote/models/user/place.dart';
 import '../data/remote/providers/auth_provider.dart';
 import '../widgets/common/cached_placeholder_image.dart';
 import '../widgets/common/error_dialog.dart';
+import '../widgets/place_details/review_row.dart';
 
 class PlaceDetailsScreen extends StatelessWidget {
   final String placeId;
@@ -59,7 +61,7 @@ class PlaceDetailsScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                const Text(
                   'Oceń miejsce',
                   style: TextStyle(
                     color: Colors.black,
@@ -69,7 +71,8 @@ class PlaceDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 RatingBar.builder(
-                  initialRating: 3,
+                  initialRating: 5,
+                  glowColor: Colors.amber,
                   minRating: 1,
                   direction: Axis.horizontal,
                   itemCount: 5,
@@ -85,13 +88,13 @@ class PlaceDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 PlatformInputGroup(children: [
                   PlatformInput(
-                    minLines: 1,
-                    maxLines: 3,
+                      minLines: 1,
+                      maxLines: 3,
+                      maxLength: 100,
                       validator: (val) => (val?.length ?? 0) < 20
                           ? 'Wpisz komentarz (min 20 znaków)'
                           : null,
                       hintText: 'Komentarz',
-
                       prefixIcon: context.platformIcon(
                           material: Icons.chat_outlined,
                           cupertino: CupertinoIcons.chat_bubble_text)),
@@ -147,7 +150,7 @@ class PlaceDetailsScreen extends StatelessWidget {
                     CachedPlaceholderImage(
                       imageUrl: place.imageUri,
                       width: double.infinity,
-                      height: screenHeight * 0.45,
+                      height: screenHeight * 0.4,
                     ),
                     Positioned(
                       top: 50,
@@ -164,6 +167,34 @@ class PlaceDetailsScreen extends StatelessWidget {
                         },
                       ),
                     ),
+                    Positioned(
+                        bottom: 40,
+                        left: 20,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(59),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                place.averageRating.toStringAsFixed(1),
+                              ),
+                              const SizedBox(
+                                width: 4,
+                              ),
+                              Icon(
+                                context.platformIcon(
+                                    material: Icons.star,
+                                    cupertino: CupertinoIcons.star_fill),
+                                color: Colors.amber,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        )),
                   ],
                 ),
                 Container(
@@ -179,7 +210,7 @@ class PlaceDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${place.name} (${place.points} pkt)",
+                        "${place.name} - ${place.points}pkt",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -363,17 +394,27 @@ class PlaceDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        height: 24,
+                        height: 36,
                       ),
                       const Text(
                         'Oceny',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      
+                      place.reviews.isNotEmpty
+                          ? ListView.builder(
+                              padding: const EdgeInsets.only(top: 12),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: place.reviews.length,
+                              itemBuilder: (context, index) => ReviewRow(
+                                review: place.reviews[index],
+                              ),
+                            )
+                          : Text(
+                              'To miejsce nie posiada żadnych ocen',
+                              style: TextStyle(color: Colors.grey.shade700),
+                            ),
                     ],
                   ),
                 ),

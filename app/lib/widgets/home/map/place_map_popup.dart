@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:scanning_world/data/remote/providers/auth_provider.dart';
 import 'package:scanning_world/screens/place_details_screen.dart';
 import 'package:scanning_world/theme/theme.dart';
+import 'package:scanning_world/widgets/common/place_rate.dart';
 import 'package:scanning_world/widgets/common/white_wrapper.dart';
 import '../../../data/remote/models/user/place.dart';
 
@@ -15,13 +16,12 @@ class PlaceMapMarker extends Marker {
 
   PlaceMapMarker(this.place)
       : super(
-    anchorPos: AnchorPos.align(AnchorAlign.top),
-    point: LatLng(
-        place.location.lat.toDouble(), place.location.lng.toDouble()),
-    builder: (context) =>
-        Icon(context.platformIcons.locationSolid,
-            size: 40, color: primary[700]),
-  );
+          anchorPos: AnchorPos.align(AnchorAlign.top),
+          point: LatLng(
+              place.location.lat.toDouble(), place.location.lng.toDouble()),
+          builder: (context) => Icon(context.platformIcons.locationSolid,
+              size: 40, color: primary[700]),
+        );
 }
 
 class PlaceMapMarkerPopup extends StatelessWidget {
@@ -38,9 +38,18 @@ class PlaceMapMarkerPopup extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "${place.name} (${place.points} pkt)",
-                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    "${place.name} - ${place.points}pkt",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+
+                  PlaceRate(rate: place.averageRating),
+                ],
               ),
               const SizedBox(
                 height: 2,
@@ -52,54 +61,56 @@ class PlaceMapMarkerPopup extends StatelessWidget {
               const SizedBox(
                 height: 2,
               ),
-              Consumer<AuthProvider>(
-                  builder: (context, authProvider, child) {
-                    final bool isPlaceScanned = authProvider.user
-                        ?.isPlaceScanned(place.id) ?? false;
-                    return Row(
-                      children: [
-                        Icon(context.platformIcon(
-                            material: isPlaceScanned ? Icons.check_circle : Icons.dangerous,
-                            cupertino:  isPlaceScanned ?  CupertinoIcons.check_mark_circled_solid : CupertinoIcons.clear_thick_circled),
-                            size: 15,
-                            color: isPlaceScanned ? Colors.green
-                                : Colors.redAccent),
-                        const SizedBox(width: 4,),
-                        Text(
-                          isPlaceScanned ? 'Odwiedzone' : 'Nieodwiedzone',
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: isPlaceScanned ? Colors.green
-                                  : Colors.redAccent),
-                        ),
-                      ],
-                    );
-                  }),
+              Consumer<AuthProvider>(builder: (context, authProvider, child) {
+                final bool isPlaceScanned =
+                    authProvider.user?.isPlaceScanned(place.id) ?? false;
+                return Row(
+                  children: [
+                    Icon(
+                        context.platformIcon(
+                            material: isPlaceScanned
+                                ? Icons.check_circle
+                                : Icons.dangerous,
+                            cupertino: isPlaceScanned
+                                ? CupertinoIcons.check_mark_circled_solid
+                                : CupertinoIcons.clear_thick_circled),
+                        size: 15,
+                        color:
+                            isPlaceScanned ? Colors.green : Colors.redAccent),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      isPlaceScanned ? 'Odwiedzone' : 'Nieodwiedzone',
+                      style: TextStyle(
+                          fontSize: 13,
+                          color:
+                              isPlaceScanned ? Colors.green : Colors.redAccent),
+                    ),
+                  ],
+                );
+              }),
               const SizedBox(
                 height: 6,
               ),
               SizedBox(
                 width: double.infinity,
                 child: PlatformElevatedButton(
-                  cupertino: (_, __) =>
-                      CupertinoElevatedButtonData(
-                        color: primary[700],
-                        minSize: 0,
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                      ),
-                  material: (_, __) =>
-                      MaterialElevatedButtonData(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              primary[700]),
-                          minimumSize: MaterialStateProperty.all(
-                              const Size(0, 0)),
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(vertical: 4)),
-                        ),
-                      ),
+                  cupertino: (_, __) => CupertinoElevatedButtonData(
+                    color: primary[700],
+                    minSize: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                  ),
+                  material: (_, __) => MaterialElevatedButtonData(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(primary[700]),
+                      minimumSize: MaterialStateProperty.all(const Size(0, 0)),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(vertical: 4)),
+                    ),
+                  ),
                   child: const FittedBox(
-                    child:  Text(
+                    child: Text(
                       'Szczegóły',
                       style: TextStyle(color: Colors.white),
                     ),

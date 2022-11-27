@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:scanning_world/screens/place_details_screen.dart';
+import 'package:scanning_world/widgets/common/place_rate.dart';
 
 import '../../../data/remote/models/user/place.dart';
 import '../../../data/remote/providers/auth_provider.dart';
@@ -65,9 +66,16 @@ class PlaceItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FittedBox(
-                        child: Text(
-                      place.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                        child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          place.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 4),
+                        PlaceRate(rate: place.averageRating),
+                      ],
                     )),
                     Text(
                       place.locationLatLng,

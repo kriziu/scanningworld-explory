@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://scanningworld-server.herokuapp.com/';
+const API_BASE_URL = 'https://scanningworld-explory.herokuapp.com/';
 const API_CONNECT_TIMEOUT = 10000;
 const API_RECEIVE_TIMEOUT = 10000;
 
