@@ -9,7 +9,7 @@ import '../http/http_exception.dart';
 import '../models/user/place.dart';
 
 FutureOr<List<Place>> parsePlaces(dynamic responseBody) {
-  final parsed =responseBody as List;
+  final parsed = responseBody as List;
   return parsed.map<Place>((json) => Place.fromJson(json)).toList();
 }
 
@@ -21,7 +21,6 @@ class PlacesProvider with ChangeNotifier {
   MapController? _mapController;
 
   MapController? get mapController => _mapController;
-
 
   void setControllers(MapController mc) {
     _mapController = mc;
@@ -53,9 +52,16 @@ class PlacesProvider with ChangeNotifier {
   }
 
   //rate place
-  Future<void> ratePlace(String placeId, double rating) async {
+  Future<void> ratePlace(String placeId, int rating, String comment) async {
     try {
-      final response = await dio.post('/places/$placeId', data: {'rating': rating});
+      final response = await dio.post('/places/review/$placeId',
+          data: {'rating': rating, 'comment': comment});
+
+      //replace place with new one
+      final place = Place.fromJson(response.data);
+      final index = _places.indexWhere((element) => element.id == place.id);
+      _places[index] = place;
+      notifyListeners();
     } on DioError catch (e) {
       throw HttpError.fromDioError(e);
     } catch (err) {

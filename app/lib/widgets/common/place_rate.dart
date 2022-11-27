@@ -16,7 +16,7 @@ class PlaceRate extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "($rate",
+          "(${rate.toStringAsFixed(1)}",
         ),
         Icon(
           context.platformIcon(

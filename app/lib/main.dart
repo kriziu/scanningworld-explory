@@ -23,7 +23,8 @@ import 'screens/register_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/enter_pin_code_screen.dart';
-import 'screens/home/home_screen.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
@@ -31,6 +32,8 @@ void main() {
     statusBarIconBrightness: Brightness.dark, // For Android: (dark icons)
   ));
   WidgetsFlutterBinding.ensureInitialized();
+  timeago.setLocaleMessages('pl', timeago.PlMessages());
+  timeago.setDefaultLocale('pl');
   runApp(const MyApp());
 }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:scanning_world/widgets/common/cached_placeholder_image.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../data/remote/models/user/review.dart';
 
@@ -12,6 +11,7 @@ class ReviewRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
@@ -31,14 +31,12 @@ class ReviewRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(review.publisher.name),
-                  const SizedBox(height: 4),
-                  const Text("4 reviews"),
                 ],
               ),
               const Spacer(),
               Text(
-                '2 days ago',
-                style: TextStyle(color: Colors.grey.shade600),
+                timeago.format(review.date),
+                style: TextStyle(color: Colors.grey.shade600,fontSize: 14),
               ),
             ],
           ),
