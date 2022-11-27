@@ -40,7 +40,10 @@ export class Place {
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          autopopulate: { maxDepth: 1 },
+          autopopulate: {
+            select:
+              '-scannedPlaces -region -email -activeCoupons -points -phone',
+          },
         },
         rating: Number,
         comment: String,
