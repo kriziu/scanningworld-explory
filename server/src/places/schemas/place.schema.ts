@@ -44,6 +44,7 @@ export class Place {
         },
         rating: Number,
         comment: String,
+        reviewDate: Date,
       },
     ],
     default: [],
@@ -52,6 +53,7 @@ export class Place {
     user: UserDocument;
     rating: number;
     comment: string;
+    reviewDate: Date;
   }[];
 
   @Prop({ default: 0 })

@@ -202,6 +202,7 @@ export class PlacesService {
           $push: {
             reviews: {
               user: userId,
+              reviewDate: new Date(),
               ...reviewPlaceDto,
             },
           },
