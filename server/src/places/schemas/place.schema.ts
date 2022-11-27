@@ -65,3 +65,5 @@ export class Place {
 }
 
 export const PlaceSchema = SchemaFactory.createForClass(Place);
+
+// heroku
