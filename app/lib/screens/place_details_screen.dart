@@ -74,97 +74,102 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (ctx, setModalState) {
-            return Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
-              decoration: const BoxDecoration(
-                color: Color(0xFFEFEFEF),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Oceń miejsce',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEFEFEF),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Oceń miejsce',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  RatingBar.builder(
-                    initialRating: rating.toDouble(),
-                    glowColor: Colors.amber,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (r) {
-                      setState(() {
-                        rating = r.toInt();
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  PlatformInputGroup(children: [
-                    PlatformInput(
-                        minLines: 1,
-                        maxLines: 3,
-                        maxLength: 100,
-                        onChanged: (value) {
-                          setState(() {
-                            review = value;
-                          });
-                        },
-                        hintText: 'Komentarz',
-                        prefixIcon: context.platformIcon(
-                            material: Icons.chat_outlined,
-                            cupertino: CupertinoIcons.chat_bubble_text)),
-                  ]),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: PlatformElevatedButton(
-                      onPressed: _isLoading ? null : () async {
-                        setModalState(() {
-                          _isLoading = true;
-                        });
-                        await _ratePlace();
-                        setModalState(() {
-                          _isLoading = false;
+                    const SizedBox(height: 12),
+                    RatingBar.builder(
+                      initialRating: rating.toDouble(),
+                      glowColor: Colors.amber,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (r) {
+                        setState(() {
+                          rating = r.toInt();
                         });
                       },
-                      child: _isLoading
-                          ? const CustomProgressIndicator()
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Oceń miejsce',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Icon(
-                                  context.platformIcons.star,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
                     ),
-                  )
-                ],
+                    const SizedBox(height: 24),
+                    PlatformInputGroup(children: [
+                      PlatformInput(
+                          minLines: 1,
+                          maxLines: 3,
+                          maxLength: 100,
+                          onChanged: (value) {
+                            setState(() {
+                              review = value;
+                            });
+                          },
+                          hintText: 'Komentarz',
+                          prefixIcon: context.platformIcon(
+                              material: Icons.chat_outlined,
+                              cupertino: CupertinoIcons.chat_bubble_text)),
+                    ]),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: PlatformElevatedButton(
+                        onPressed: _isLoading ? null : () async {
+                          setModalState(() {
+                            _isLoading = true;
+                          });
+                          await _ratePlace();
+                          setModalState(() {
+                            _isLoading = false;
+                          });
+                        },
+                        child: _isLoading
+                            ? const CustomProgressIndicator()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Oceń miejsce',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Icon(
+                                    context.platformIcons.star,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           });

@@ -46,7 +46,7 @@ class ActiveCoupon {
 
   factory ActiveCoupon.fromJson(Map<String, dynamic> json) => ActiveCoupon(
         coupon: Coupon.fromJson(json["coupon"]),
-        validUntil: DateTime.parse(json["validUntil"]),
+        validUntil: DateTime.parse(json["validUntil"]).toLocal(),
         id: json["_id"],
       );
 
@@ -59,7 +59,7 @@ class ActiveCoupon {
   String get formattedValidUntil {
     var formatter = DateFormat('HH:mm:ss');
     String formattedDate =
-        formatter.format(validUntil.add(const Duration(hours: 2)));
+        formatter.format(validUntil);
     return formattedDate;
   }
 

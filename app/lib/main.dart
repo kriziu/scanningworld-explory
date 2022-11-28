@@ -34,6 +34,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   timeago.setLocaleMessages('pl', timeago.PlMessages());
   timeago.setDefaultLocale('pl');
+
   runApp(const MyApp());
 }
 
