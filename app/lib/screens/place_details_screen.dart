@@ -53,8 +53,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   var _isLoading = false;
 
   Future<void> _ratePlace() async {
-    debugPrint('rating: $rating');
-    debugPrint('review: $review');
 
     try {
       await context
@@ -421,6 +419,12 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: PlatformTextButton(
+                          material: (_, __) => MaterialTextButtonData(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                            ),
+                          ),
                           color: Colors.white,
                           onPressed: () {
                             _openRatePlaceSheet(context, place);

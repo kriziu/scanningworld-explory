@@ -66,11 +66,12 @@ class AuthProvider with ChangeNotifier {
                   ));
               return handler.resolve(response);
             } on DioError catch (e) {
-              // catch another error
+               await secureStorageManager.deleteAll();
               return handler.reject(e);
             }
           }
         } catch (err) {
+          await secureStorageManager.deleteAll();
           return handler.reject(error);
         }
       }
@@ -84,12 +85,15 @@ class AuthProvider with ChangeNotifier {
       final response = await dio.get('/users/me',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       final resUser = await compute(parseUser, response.data);
+
       _user = resUser;
       notifyListeners();
       return resUser;
     } on DioError catch (e) {
+      await secureStorageManager.deleteAll();
       throw HttpError.fromDioError(e);
     } catch (err) {
+      await secureStorageManager.deleteAll();
       throw HttpError(err.toString());
     }
   }
@@ -118,8 +122,10 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return authResult;
     } on DioError catch (e) {
+      await secureStorageManager.deleteAll();
       throw HttpError.fromDioError(e);
     } catch (err) {
+      await secureStorageManager.deleteAll();
       throw HttpError(err.toString());
     }
   }
@@ -150,8 +156,10 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return authResult;
     } on DioError catch (e) {
+      await secureStorageManager.deleteAll();
       throw HttpError.fromDioError(e);
     } catch (err) {
+      await secureStorageManager.deleteAll();
       throw HttpError(err.toString());
     }
   }
@@ -175,8 +183,10 @@ class AuthProvider with ChangeNotifier {
       _accessToken = session.accessToken;
       return session;
     } on DioError catch (e) {
+      await secureStorageManager.deleteAll();
       throw HttpError.fromDioError(e);
     } catch (err) {
+      await secureStorageManager.deleteAll();
       throw HttpError(err.toString());
     }
   }
@@ -208,8 +218,10 @@ class AuthProvider with ChangeNotifier {
       _user = null;
       notifyListeners();
     } on DioError catch (e) {
+      await secureStorageManager.deleteAll();
       throw HttpError.fromDioError(e);
     } catch (err) {
+      await secureStorageManager.deleteAll();
       throw HttpError(err.toString());
     }
   }

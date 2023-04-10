@@ -34,7 +34,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     try {
       final authProvider = context.read<RegionsProvider>();
       await authProvider.fetchRegions();
-    } on HttpError catch (error) {
+    } on HttpError catch (_) {
       await fetchRegions();
     } catch (error) {
       showPlatformDialog(context: context, builder: (c)=>ErrorDialog(message: error.toString()));
@@ -51,9 +51,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     Navigator.of(context).pushReplacementNamed(EnterPinCodeScreen.routeName);
   }
 
-  //check if refresh token is valid and get new access token
-  //if access token is valid then go to enter pin code screen/bio auth
-  //if access token is not valid then go to sign in screen
+
 
   Future<void> checkLocalSignIn() async {
     final authProvider = context.read<AuthProvider>();
@@ -63,6 +61,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
     final refreshToken = await _secureStorageManager.getRefreshToken();
     final pinCode = await _secureStorageManager.getPinCode();
+
+
     if (refreshToken != null && pinCode != null) {
       try {
         await authProvider.refreshToken();

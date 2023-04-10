@@ -11,7 +11,7 @@ class HttpError implements Exception {
 
   @override
   String toString() {
-    return "Error: $message. Sprawdź swoje połączenie z internetem";
+    return "Error: $message.";
   }
 
   static HttpError fromDioError(DioError dioError){
